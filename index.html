@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Water App</title>
+  <link rel="stylesheet" href="style.css">
+  水分摂取管理アプリ（Web版）
+
+</head>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+<body>
+  <hr>
+<!-- ログ表示モーダル -->
+<div id="logModal" class="modal">
+  <div class="modal-content">
+    <h3>飲んだログ</h3>
+    <div id="drinkLogArea"></div>
+    <button onclick="closeLogModal()">閉じる</button>
+  </div>
+</div>
+
+<button onclick="openLogModal()">ログを見る</button>
+
+
+
+<h3>1週間の記録</h3>
+<canvas id="weekChart" width="400" height="200"></canvas>
+<button onclick="renderWeeklyChart()">グラフを見る</button>
+
+
+
+  <!-- 100ml ボタン -->
+  
+  <button onclick="addWater(200)">200ml 飲んだ！</button>
+  <br>
+
+  <!-- 今日の合計 -->
+  <p id="total"></p>
+  <p id="caffeineDisplay">今日のカフェイン：0 mg</p>
+  <p id="effectiveDisplay">実質摂取量：0 ml</p>
+
+
+  <!-- よく使う量のボタン -->
+  <div id="presetButtons"></div>
+
+  <!-- 手入力 -->
+  飲み物の種類 :
+  <select id="drinkTypeSelect">
+    <option value="water">水</option>
+    <option value="coffee">コーヒー</option>
+    <option value="tea">お茶</option>
+    <option value="sports">スポドリ</option>
+    <option value="juice">ジュース</option>
+    <option value="energy">エナドリ</option>
+  </select>
+  <p>
+    飲んだ量（ml）：
+    <input type="number" id="drinkInput" placeholder="100">
+    <button onclick="addWater()">追加</button>
+  </p>
+
+  <br>
+  <button onclick="resetwater()">リセット</button>
+
+  <!-- 進捗バー -->
+  <div class="progress">
+    <div id="progressBar" class="progress-bar"></div>
+  </div>
+
+  <!-- 目標量 -->
+  <p>
+    目標量（ml）：
+    <input type="number" id="goalInput" placeholder="2000">
+    <button onclick="setGoal()">設定</button>
+    <!-- 計算ボタン -->
+<button onclick="openCalcModal()">必要水分量を計算する</button>
+
+<!-- モーダル -->
+<div id="calcModal" class="modal">
+  <div class="modal-content">
+    <h3>必要水分量の自動計算</h3>
+
+    <p>年齢：<input type="number" id="ageInput" placeholder="20"></p>
+    <p>体重（kg）：<input type="number" id="weightInput" placeholder="60"></p>
+
+    <button onclick="calculateGoal()">計算する</button>
+    <button onclick="closeCalcModal()">閉じる</button>
+  </div>
+</div>
+
+  </p>
+
+  <p id="goalDisplay"></p>
+  <p><a href="map.html">近くの水源を探す</a></p>
+
+  <!-- app.js 読み込み -->
+  <script src="app.js"></script>
+</body>
+</html>
