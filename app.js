@@ -16,7 +16,12 @@ const savedDate = localStorage.getItem("date");
 
 if (savedDate !== today) {
   localStorage.setItem("date", today);
-  localStorage.setItem("drinkLog", JSON.stringify([]));
+
+  // 今日の合計だけリセット（必要なら）
+  localStorage.setItem("total", 0);
+
+  // drinkLog は消さない！！
+  // localStorage.setItem("drinkLog", JSON.stringify([])); ← 削除
 }
 
 let drinkLog = JSON.parse(localStorage.getItem("drinkLog")) || [];
