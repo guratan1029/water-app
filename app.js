@@ -11,8 +11,13 @@ const drinkTypes = {
 };
 
 // ====== 日付リセット ======
-const today = new Date().toLocaleDateString();
+function getDateString(date = new Date()) {
+  return date.toISOString().split("T")[0];
+}
+
+const today = getDateString();
 const savedDate = localStorage.getItem("date");
+
 
 if (savedDate !== today) {
   localStorage.setItem("date", today);
@@ -23,6 +28,11 @@ if (savedDate !== today) {
   // drinkLog は消さない！！
   // localStorage.setItem("drinkLog", JSON.stringify([])); ← 削除
 }
+
+function getDateString(date = new Date()) {
+  return date.toISOString().split("T")[0]; // "2026-06-25"
+}
+
 
 let drinkLog = JSON.parse(localStorage.getItem("drinkLog")) || [];
 
@@ -46,47 +56,29 @@ function recordDrink(amount, type) {
 
 // ====== 今日の合計 ======
 function getTodayTotal() {
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
+  const today = getDateString();
 
   return drinkLog
-    .filter(e => {
-      const d = new Date(e.time);
-      d.setHours(0, 0, 0, 0);
-      return d.getTime() === today.getTime();
-    })
-    .reduce((sum, e) => sum + e.amount, 0);
+    .filter(e => getDateString(new Date(e.time)) === today)
+  
 }
 
 // ====== 今日のカフェイン ======
 function getTodayCaffeine() {
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
+  const today = getDateString();
 
   return drinkLog
-    .filter(e => {
-      const d = new Date(e.time);
-      d.setHours(0, 0, 0, 0);
-      return d.getTime() === today.getTime();
-    })
-    .reduce((sum, e) => sum + (drinkTypes[e.type]?.caffeine || 0), 0);
+    .filter(e => getDateString(new Date(e.time)) === today)
+  
 }
 
 // ====== 実質水分量 ======
 function getTodayEffectiveHydration() {
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
+  const today = getDateString();
 
   return drinkLog
-    .filter(e => {
-      const d = new Date(e.time);
-      d.setHours(0, 0, 0, 0);
-      return d.getTime() === today.getTime();
-    })
-    .reduce((sum, e) => {
-      const rate = drinkTypes[e.type]?.hydrationRate ?? 1.0;
-      return sum + e.amount * rate;
-    }, 0);
+    .filter(e => getDateString(new Date(e.time)) === today)
+  
 }
 
 // ====== 飲みすぎチェック（30分以内） ======
@@ -186,14 +178,12 @@ function resetwater() {
   if (!ok) return;
 
   // 今日のログだけ削除
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
+  const today = getDateString();
 
   drinkLog = drinkLog.filter(entry => {
-    const d = new Date(entry.time);
-    d.setHours(0, 0, 0, 0);
-    return d.getTime() !== today.getTime();
+    return getDateString(new Date(entry.time)) !== today;
   });
+  
 
   localStorage.setItem("drinkLog", JSON.stringify(drinkLog));
 
