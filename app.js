@@ -1,15 +1,6 @@
 
 
 
-// ====== Drink Types ======
-const drinkTypes = {
-  water: { name: "水", color: "#4FC3F7", caffeine: 0, hydrationRate: 1.0 },
-  coffee: { name: "コーヒー", color: "#6F4E37", caffeine: 80, hydrationRate: 0.8 },
-  tea: { name: "お茶", color: "#8BC34A", caffeine: 30, hydrationRate: 0.9 },
-  sports: { name: "スポーツドリンク", color: "#FF9800", caffeine: 0, hydrationRate: 1.1 },
-  juice: { name: "ジュース", color: "#FF5722", caffeine: 0, hydrationRate: 0.9 },
-  energy: { name: "エナジードリンク", color: "#bdff22", caffeine: 120, hydrationRate: 0.5 }
-};
 
 // ====== 日付ユーティリティ ======
 function getDateString(date = new Date()) {
@@ -54,6 +45,17 @@ function recordDrink(amount, type) {
     });
   }
 }
+
+// ====== Drink Types ======
+const drinkTypes = {
+  water: { name: "水", color: "#4FC3F7", caffeine: 0, hydrationRate: 1.0 },
+  coffee: { name: "コーヒー", color: "#6F4E37", caffeine: 80, hydrationRate: 0.8 },
+  tea: { name: "お茶", color: "#8BC34A", caffeine: 30, hydrationRate: 0.9 },
+  sports: { name: "スポーツドリンク", color: "#FF9800", caffeine: 0, hydrationRate: 1.1 },
+  juice: { name: "ジュース", color: "#FF5722", caffeine: 0, hydrationRate: 0.9 },
+  energy: { name: "エナジードリンク", color: "#bdff22", caffeine: 120, hydrationRate: 0.5 }
+};
+
 
 // ====== 今日の合計 ======
 function getTodayTotal() {
