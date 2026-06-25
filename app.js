@@ -193,6 +193,8 @@ function showDrinkLog() {
 // ====== 週間データ ======
 function getWeeklyData() {
   const days = [];
+
+  // 過去7日分の空データを作る
   for (let i = 6; i >= 0; i--) {
     const d = new Date();
     d.setHours(0, 0, 0, 0);
@@ -204,14 +206,24 @@ function getWeeklyData() {
     });
   }
 
+  // ログを日付ごとに集計
   drinkLog.forEach(entry => {
-    const key = getDateString(new Date(entry.time));
+    if (!entry.time) return; // ← time が無い古いデータを無視
+
+    const entryDate = new Date(entry.time);
+    entryDate.setHours(0, 0, 0, 0);
+
+    const key = getDateString(entryDate);
     const day = days.find(d => d.date === key);
-    if (day) day.total += entry.amount;
+
+    if (day) {
+      day.total += entry.amount;
+    }
   });
 
   return days;
 }
+
 
 let weekChartInstance = null;
 
