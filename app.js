@@ -1,5 +1,3 @@
-
-
 // ====== Drink Types ======
 const drinkTypes = {
   water: { name: "水", color: "#4FC3F7", caffeine: 0, hydrationRate: 1.0 },
@@ -10,29 +8,19 @@ const drinkTypes = {
   energy: { name: "エナジードリンク", color: "#bdff22", caffeine: 120, hydrationRate: 0.5 }
 };
 
-// ====== 日付リセット ======
-function getDateString(date = new Date()) {
-  return date.toISOString().split("T")[0];
-}
-
-const today = getDateString();
-const savedDate = localStorage.getItem("date");
-
-
-if (savedDate !== today) {
-  localStorage.setItem("date", today);
-
-  // 今日の合計だけリセット（必要なら）
-  localStorage.setItem("total", 0);
-
-  // drinkLog は消さない！！
-  // localStorage.setItem("drinkLog", JSON.stringify([])); ← 削除
-}
-
+// ====== 日付ユーティリティ ======
 function getDateString(date = new Date()) {
   return date.toISOString().split("T")[0]; // "2026-06-25"
 }
 
+// ====== 日付リセット ======
+const today = getDateString();
+const savedDate = localStorage.getItem("date");
+
+if (savedDate !== today) {
+  localStorage.setItem("date", today);
+  localStorage.setItem("total", 0);
+}
 
 let drinkLog = JSON.parse(localStorage.getItem("drinkLog")) || [];
 
@@ -60,7 +48,7 @@ function getTodayTotal() {
 
   return drinkLog
     .filter(e => getDateString(new Date(e.time)) === today)
-  
+    .reduce((sum, e) => sum + e.amount, 0);
 }
 
 // ====== 今日のカフェイン ======
@@ -69,7 +57,7 @@ function getTodayCaffeine() {
 
   return drinkLog
     .filter(e => getDateString(new Date(e.time)) === today)
-  
+    .reduce((sum, e) => sum + (drinkTypes[e.type]?.caffeine || 0), 0);
 }
 
 // ====== 実質水分量 ======
@@ -78,7 +66,10 @@ function getTodayEffectiveHydration() {
 
   return drinkLog
     .filter(e => getDateString(new Date(e.time)) === today)
-  
+    .reduce((sum, e) => {
+      const rate = drinkTypes[e.type]?.hydrationRate ?? 1.0;
+      return sum + e.amount * rate;
+    }, 0);
 }
 
 // ====== 飲みすぎチェック（30分以内） ======
@@ -177,20 +168,18 @@ function resetwater() {
   const ok = confirm("本当にリセットしますか？\n今日の摂取量が 0 になります。");
   if (!ok) return;
 
-  // 今日のログだけ削除
   const today = getDateString();
 
   drinkLog = drinkLog.filter(entry => {
     return getDateString(new Date(entry.time)) !== today;
   });
-  
 
   localStorage.setItem("drinkLog", JSON.stringify(drinkLog));
 
   updateUI();
 }
 
-
+// ====== 目標設定 ======
 function setGoal() {
   const input = document.getElementById("goalInput").value;
   if (!input) return;
@@ -201,8 +190,7 @@ function setGoal() {
   updateUI();
 }
 
-
-
+// ====== 目標計算モーダル ======
 function openCalcModal() {
   document.getElementById("calcModal").style.display = "flex";
 }
@@ -232,6 +220,7 @@ function calculateGoal() {
   closeCalcModal();
 }
 
+// ====== ログ表示 ======
 function openLogModal() {
   showDrinkLog();
   document.getElementById("logModal").style.display = "flex";
@@ -240,8 +229,6 @@ function openLogModal() {
 function closeLogModal() {
   document.getElementById("logModal").style.display = "none";
 }
-
-
 
 function showDrinkLog() {
   const area = document.getElementById("drinkLogArea");
@@ -274,16 +261,13 @@ function getWeeklyData() {
     d.setDate(d.getDate() - i);
 
     days.push({
-      date: d.toISOString().slice(0, 10),
+      date: getDateString(d),
       total: 0
     });
   }
 
   drinkLog.forEach(entry => {
-    const entryDate = new Date(entry.time);
-    entryDate.setHours(0, 0, 0, 0);
-    const key = entryDate.toISOString().slice(0, 10);
-
+    const key = getDateString(new Date(entry.time));
     const day = days.find(d => d.date === key);
     if (day) {
       day.total += entry.amount;
@@ -324,7 +308,6 @@ function renderWeeklyChart() {
     }
   });
 }
-
 
 // ====== 初期表示 ======
 updateUI();
