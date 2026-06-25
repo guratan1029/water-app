@@ -25,10 +25,10 @@ if (savedDate !== today) {
   localStorage.setItem("total", 0);
 }
 
-// ====== ここで drinkLog を読み込む ======
+// ====== まず drinkLog を読み込む ======
 let drinkLog = JSON.parse(localStorage.getItem("drinkLog")) || [];
 
-// ====== 読み込んだ後で加工する ======
+// ====== 読み込んだ後で加工する（ここに置く） ======
 drinkLog = drinkLog.map(e => ({
   ...e,
   amount: Number(e.amount) || 0,
@@ -60,7 +60,8 @@ function getTodayTotal() {
   const today = getDateString();
 
   return drinkLog
-    .filter(e => getDateString(new Date(e.time)) === today)
+  .filter(e => e.date === today)
+
     .reduce((sum, e) => sum + e.amount, 0);
 }
 
@@ -69,7 +70,8 @@ function getTodayCaffeine() {
   const today = getDateString();
 
   return drinkLog
-    .filter(e => getDateString(new Date(e.time)) === today)
+  .filter(e => e.date === today)
+
     .reduce((sum, e) => sum + (drinkTypes[e.type]?.caffeine || 0), 0);
 }
 
@@ -78,7 +80,8 @@ function getTodayEffectiveHydration() {
   const today = getDateString();
 
   return drinkLog
-    .filter(e => getDateString(new Date(e.time)) === today)
+  .filter(e => e.date === today)
+
     .reduce((sum, e) => {
       const rate = drinkTypes[e.type]?.hydrationRate ?? 1.0;
       return sum + e.amount * rate;
