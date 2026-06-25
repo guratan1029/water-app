@@ -13,37 +13,11 @@ function getDateString(date = new Date()) {
   return date.toISOString().split("T")[0];
 }
 
-
-
-// ====== まず drinkLog を読み込む ======
+// ====== drinkLog 読み込み ======
 let drinkLog = JSON.parse(localStorage.getItem("drinkLog")) || [];
-
-// ====== 読み込んだ後で加工する（ここに置く） ======
-drinkLog = drinkLog.map(e => ({
-  ...e,
-  amount: Number(e.amount) || 0,
-  date: getDateString(new Date(e.time))
-}));
-
-localStorage.setItem("drinkLog", JSON.stringify(drinkLog));
 
 // ====== 目標量 ======
 let goal = Number(localStorage.getItem("goal")) || 1500;
-
-// ====== 記録 ======
-function recordDrink(amount, type) {
-  const now = Date.now();
-
-  drinkLog.push({ time: now, amount, type });
-  localStorage.setItem("drinkLog", JSON.stringify(drinkLog));
-
-  if (navigator.serviceWorker.controller) {
-    navigator.serviceWorker.controller.postMessage({
-      type: "updateLastDrink",
-      time: now
-    });
-  }
-}
 
 // ====== 日付リセット ======
 const today = getDateString();
@@ -54,10 +28,16 @@ if (savedDate !== today) {
   localStorage.setItem("total", 0);
 }
 
+// ====== 記録 ======
+function recordDrink(amount, type) {
+  const now = Date.now();
+  drinkLog.push({ time: now, amount, type });
+  localStorage.setItem("drinkLog", JSON.stringify(drinkLog));
+}
+
 // ====== 今日の合計 ======
 function getTodayTotal() {
   const today = getDateString();
-
   return drinkLog
     .filter(e => getDateString(new Date(e.time)) === today)
     .reduce((sum, e) => sum + e.amount, 0);
@@ -66,7 +46,6 @@ function getTodayTotal() {
 // ====== 今日のカフェイン ======
 function getTodayCaffeine() {
   const today = getDateString();
-
   return drinkLog
     .filter(e => getDateString(new Date(e.time)) === today)
     .reduce((sum, e) => sum + (drinkTypes[e.type]?.caffeine || 0), 0);
@@ -75,16 +54,12 @@ function getTodayCaffeine() {
 // ====== 実質水分量 ======
 function getTodayEffectiveHydration() {
   const today = getDateString();
-
   return drinkLog
     .filter(e => getDateString(new Date(e.time)) === today)
-    .reduce((sum, e) => {
-      const rate = drinkTypes[e.type]?.hydrationRate ?? 1.0;
-      return sum + e.amount * rate;
-    }, 0);
+    .reduce((sum, e) => sum + e.amount * (drinkTypes[e.type]?.hydrationRate ?? 1.0), 0);
 }
 
-// ====== 飲みすぎチェック（30分以内） ======
+// ====== 飲みすぎチェック ======
 function checkOverdrink(amount) {
   const now = Date.now();
   const THIRTY_MIN = 30 * 60 * 1000;
@@ -96,23 +71,6 @@ function checkOverdrink(amount) {
     alert("短時間での飲みすぎに注意してください！");
   }
 }
-
-// ====== リマインダー ======
-const REMIND_INTERVAL_MS = 2 * 60 * 60 * 1000;
-let nextNotifyTime = Number(localStorage.getItem("nextNotifyTime")) || 0;
-
-setInterval(() => {
-  if (drinkLog.length === 0) return;
-
-  const last = drinkLog[drinkLog.length - 1].time;
-  const now = Date.now();
-
-  if (now >= nextNotifyTime && now - last >= REMIND_INTERVAL_MS) {
-    new Notification("そろそろ水を飲みましょう！");
-    nextNotifyTime = now + REMIND_INTERVAL_MS;
-    localStorage.setItem("nextNotifyTime", nextNotifyTime);
-  }
-}, 60000);
 
 // ====== UI ======
 function updateUI() {
@@ -168,7 +126,6 @@ function addWater(amountFromPreset = null) {
 
   checkOverdrink(amount);
   recordDrink(amount, drinkType);
-
   updateUI();
 
   if (amountFromPreset === null) {
@@ -176,16 +133,13 @@ function addWater(amountFromPreset = null) {
   }
 }
 
+// ====== リセット ======
 function resetwater() {
   const ok = confirm("本当にリセットしますか？\n今日の摂取量が 0 になります。");
   if (!ok) return;
 
   const today = getDateString();
-
-  drinkLog = drinkLog.filter(entry => {
-    return getDateString(new Date(entry.time)) !== today;
-  });
-
+  drinkLog = drinkLog.filter(e => getDateString(new Date(e.time)) !== today);
   localStorage.setItem("drinkLog", JSON.stringify(drinkLog));
 
   updateUI();
@@ -198,38 +152,7 @@ function setGoal() {
 
   goal = Number(input);
   localStorage.setItem("goal", goal);
-
   updateUI();
-}
-
-// ====== 目標計算モーダル ======
-function openCalcModal() {
-  document.getElementById("calcModal").style.display = "flex";
-}
-
-function closeCalcModal() {
-  document.getElementById("calcModal").style.display = "none";
-}
-
-function calculateGoal() {
-  const weight = Number(document.getElementById("weightInput").value);
-  const age = Number(document.getElementById("ageInput").value);
-
-  if (!weight || !age) {
-    alert("年齢と体重を入力してください");
-    return;
-  }
-
-  let mlPerKg = age <= 64 ? 35 : 25;
-  const goalAmount = weight * mlPerKg;
-
-  goal = goalAmount;
-  localStorage.setItem("goal", goal);
-
-  updateUI();
-  alert(`あなたの1日の目標水分量は ${goal} ml です！`);
-
-  closeCalcModal();
 }
 
 // ====== ログ表示 ======
@@ -264,7 +187,7 @@ function showDrinkLog() {
     });
 }
 
-// ====== 週間データ取得 ======
+// ====== 週間データ ======
 function getWeeklyData() {
   const days = [];
   for (let i = 6; i >= 0; i--) {
@@ -279,11 +202,9 @@ function getWeeklyData() {
   }
 
   drinkLog.forEach(entry => {
-    const key = entry.date;
+    const key = getDateString(new Date(entry.time));
     const day = days.find(d => d.date === key);
-    if (day) {
-      day.total += entry.amount;
-    }
+    if (day) day.total += entry.amount;
   });
 
   return days;
@@ -296,9 +217,7 @@ function renderWeeklyChart() {
   const labels = data.map(d => d.date);
   const totals = data.map(d => d.total);
 
-  if (weekChartInstance) {
-    weekChartInstance.destroy();
-  }
+  if (weekChartInstance) weekChartInstance.destroy();
 
   const ctx = document.getElementById("weekChart");
   weekChartInstance = new Chart(ctx, {
@@ -314,9 +233,7 @@ function renderWeeklyChart() {
       }]
     },
     options: {
-      scales: {
-        y: { beginAtZero: true }
-      }
+      scales: { y: { beginAtZero: true } }
     }
   });
 }
