@@ -1,17 +1,3 @@
-// ====== 古いログの日付を ISO 形式に変換 ======
-drinkLog = drinkLog.map(e => {
-  return {
-    ...e,
-    date: getDateString(new Date(e.time)), // 新しい日付キー
-    amount: Number(e.amount) || 0
-  };
-});
-
-localStorage.setItem("drinkLog", JSON.stringify(drinkLog));
-
-
-
-
 // ====== Drink Types ======
 const drinkTypes = {
   water: { name: "水", color: "#4FC3F7", caffeine: 0, hydrationRate: 1.0 },
@@ -24,19 +10,22 @@ const drinkTypes = {
 
 // ====== 日付ユーティリティ ======
 function getDateString(date = new Date()) {
-  return date.toISOString().split("T")[0]; // "2026-06-25"
+  return date.toISOString().split("T")[0];
 }
 
-// ====== 日付リセット ======
-const today = getDateString();
-const savedDate = localStorage.getItem("date");
 
-if (savedDate !== today) {
-  localStorage.setItem("date", today);
-  localStorage.setItem("total", 0);
-}
 
+// ====== まず drinkLog を読み込む ======
 let drinkLog = JSON.parse(localStorage.getItem("drinkLog")) || [];
+
+// ====== 読み込んだ後で加工する（ここに置く） ======
+drinkLog = drinkLog.map(e => ({
+  ...e,
+  amount: Number(e.amount) || 0,
+  date: getDateString(new Date(e.time))
+}));
+
+localStorage.setItem("drinkLog", JSON.stringify(drinkLog));
 
 // ====== 目標量 ======
 let goal = Number(localStorage.getItem("goal")) || 1500;
@@ -54,6 +43,15 @@ function recordDrink(amount, type) {
       time: now
     });
   }
+}
+
+// ====== 日付リセット ======
+const today = getDateString();
+const savedDate = localStorage.getItem("date");
+
+if (savedDate !== today) {
+  localStorage.setItem("date", today);
+  localStorage.setItem("total", 0);
 }
 
 // ====== 今日の合計 ======
