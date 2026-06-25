@@ -1,11 +1,3 @@
-// ====== 古いログの日付を ISO 形式に統一 ======
-drinkLog = drinkLog.map(e => ({
-  ...e,
-  amount: Number(e.amount) || 0,
-  date: getDateString(new Date(e.time)) // 新しい日付キー
-}));
-
-localStorage.setItem("drinkLog", JSON.stringify(drinkLog));
 
 
 
@@ -21,7 +13,7 @@ const drinkTypes = {
 
 // ====== 日付ユーティリティ ======
 function getDateString(date = new Date()) {
-  return date.toISOString().split("T")[0]; // "2026-06-25"
+  return date.toISOString().split("T")[0];
 }
 
 // ====== 日付リセット ======
@@ -33,7 +25,17 @@ if (savedDate !== today) {
   localStorage.setItem("total", 0);
 }
 
+// ====== ここで drinkLog を読み込む ======
 let drinkLog = JSON.parse(localStorage.getItem("drinkLog")) || [];
+
+// ====== 読み込んだ後で加工する ======
+drinkLog = drinkLog.map(e => ({
+  ...e,
+  amount: Number(e.amount) || 0,
+  date: getDateString(new Date(e.time))
+}));
+
+localStorage.setItem("drinkLog", JSON.stringify(drinkLog));
 
 // ====== 目標量 ======
 let goal = Number(localStorage.getItem("goal")) || 1500;
