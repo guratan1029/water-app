@@ -1,3 +1,12 @@
+// ====== drinkLog の修正（古いデータ対策） ======
+drinkLog = drinkLog.map(e => ({
+  ...e,
+  amount: Number(e.amount) || 0
+}));
+localStorage.setItem("drinkLog", JSON.stringify(drinkLog));
+
+
+
 // ====== Drink Types ======
 const drinkTypes = {
   water: { name: "水", color: "#4FC3F7", caffeine: 0, hydrationRate: 1.0 },
