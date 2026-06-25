@@ -1,9 +1,14 @@
-// ====== drinkLog の修正（古いデータ対策） ======
-drinkLog = drinkLog.map(e => ({
-  ...e,
-  amount: Number(e.amount) || 0
-}));
+// ====== 古いログの日付を ISO 形式に変換 ======
+drinkLog = drinkLog.map(e => {
+  return {
+    ...e,
+    date: getDateString(new Date(e.time)), // 新しい日付キー
+    amount: Number(e.amount) || 0
+  };
+});
+
 localStorage.setItem("drinkLog", JSON.stringify(drinkLog));
+
 
 
 
@@ -276,7 +281,7 @@ function getWeeklyData() {
   }
 
   drinkLog.forEach(entry => {
-    const key = getDateString(new Date(entry.time));
+    const key = entry.date;
     const day = days.find(d => d.date === key);
     if (day) {
       day.total += entry.amount;
