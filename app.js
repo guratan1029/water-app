@@ -18,17 +18,6 @@ function getDateString(date = new Date()) {
 // ====== drinkLog 読み込み ======
 let drinkLog = JSON.parse(localStorage.getItem("drinkLog")) || [];
 
-// ====== 古いデータの修正 ======
-let raw = JSON.parse(localStorage.getItem("drinkLog")) || [];
-raw = raw.map(e => {
-  if (!e.time) {
-    // time が無い古いデータを修正
-    e.time = Date.now();
-  }
-  return e;
-});
-localStorage.setItem("drinkLog", JSON.stringify(raw));
-
 
 // ====== 目標量 ======
 let goal = Number(localStorage.getItem("goal")) || 1500;
@@ -231,23 +220,30 @@ function renderWeeklyChart() {
   const labels = data.map(d => d.date);
   const totals = data.map(d => d.total);
 
-  if (weekChartInstance) weekChartInstance.destroy();
+  if (weekChartInstance) {
+    weekChartInstance.destroy();
+  }
 
   const ctx = document.getElementById("weekChart");
   weekChartInstance = new Chart(ctx, {
-    type: "bar",
+    type: "line",
     data: {
       labels,
       datasets: [{
         label: "1日の摂取量 (ml)",
         data: totals,
-        backgroundColor: "rgba(54, 162, 235, 0.5)",
         borderColor: "rgba(54, 162, 235, 1)",
-        borderWidth: 1
+        backgroundColor: "rgba(54, 162, 235, 0.2)",
+        borderWidth: 2,
+        tension: 0.3, // ← 線を少し滑らかに
+        pointRadius: 5,
+        pointBackgroundColor: "rgba(54, 162, 235, 1)"
       }]
     },
     options: {
-      scales: { y: { beginAtZero: true } }
+      scales: {
+        y: { beginAtZero: true }
+      }
     }
   });
 }
