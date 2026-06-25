@@ -1,3 +1,14 @@
+// ====== 古いデータの修正 ======
+let drinkLog = JSON.parse(localStorage.getItem("drinkLog")) || [];
+
+drinkLog = drinkLog.map(e => {
+  if (!e.time || isNaN(Number(e.time))) {
+    e.time = Date.now(); // time が壊れてるデータを修正
+  }
+  return e;
+});
+
+localStorage.setItem("drinkLog", JSON.stringify(drinkLog));
 
 
 // ====== Drink Types ======
@@ -15,8 +26,6 @@ function getDateString(date = new Date()) {
   return date.toISOString().split("T")[0];
 }
 
-// ====== drinkLog 読み込み ======
-let drinkLog = JSON.parse(localStorage.getItem("drinkLog")) || [];
 
 
 // ====== 目標量 ======
