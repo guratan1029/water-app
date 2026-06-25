@@ -1,3 +1,5 @@
+
+
 // ====== Drink Types ======
 const drinkTypes = {
   water: { name: "水", color: "#4FC3F7", caffeine: 0, hydrationRate: 1.0 },
@@ -15,6 +17,18 @@ function getDateString(date = new Date()) {
 
 // ====== drinkLog 読み込み ======
 let drinkLog = JSON.parse(localStorage.getItem("drinkLog")) || [];
+
+// ====== 古いデータの修正 ======
+let raw = JSON.parse(localStorage.getItem("drinkLog")) || [];
+raw = raw.map(e => {
+  if (!e.time) {
+    // time が無い古いデータを修正
+    e.time = Date.now();
+  }
+  return e;
+});
+localStorage.setItem("drinkLog", JSON.stringify(raw));
+
 
 // ====== 目標量 ======
 let goal = Number(localStorage.getItem("goal")) || 1500;
