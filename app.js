@@ -1,10 +1,30 @@
+// ====== 古いログの日付を ISO 形式に変換 ======
+drinkLog = drinkLog.map(e => {
+  return {
+    ...e,
+    date: getDateString(new Date(e.time)), // 新しい日付キー
+    amount: Number(e.amount) || 0
+  };
+});
+
+localStorage.setItem("drinkLog", JSON.stringify(drinkLog));
 
 
 
+
+// ====== Drink Types ======
+const drinkTypes = {
+  water: { name: "水", color: "#4FC3F7", caffeine: 0, hydrationRate: 1.0 },
+  coffee: { name: "コーヒー", color: "#6F4E37", caffeine: 80, hydrationRate: 0.8 },
+  tea: { name: "お茶", color: "#8BC34A", caffeine: 30, hydrationRate: 0.9 },
+  sports: { name: "スポーツドリンク", color: "#FF9800", caffeine: 0, hydrationRate: 1.1 },
+  juice: { name: "ジュース", color: "#FF5722", caffeine: 0, hydrationRate: 0.9 },
+  energy: { name: "エナジードリンク", color: "#bdff22", caffeine: 120, hydrationRate: 0.5 }
+};
 
 // ====== 日付ユーティリティ ======
 function getDateString(date = new Date()) {
-  return date.toISOString().split("T")[0];
+  return date.toISOString().split("T")[0]; // "2026-06-25"
 }
 
 // ====== 日付リセット ======
@@ -16,17 +36,7 @@ if (savedDate !== today) {
   localStorage.setItem("total", 0);
 }
 
-// ====== まず drinkLog を読み込む ======
 let drinkLog = JSON.parse(localStorage.getItem("drinkLog")) || [];
-
-// ====== 読み込んだ後で加工する（ここに置く） ======
-drinkLog = drinkLog.map(e => ({
-  ...e,
-  amount: Number(e.amount) || 0,
-  date: getDateString(new Date(e.time))
-}));
-
-localStorage.setItem("drinkLog", JSON.stringify(drinkLog));
 
 // ====== 目標量 ======
 let goal = Number(localStorage.getItem("goal")) || 1500;
@@ -46,24 +56,12 @@ function recordDrink(amount, type) {
   }
 }
 
-// ====== Drink Types ======
-const drinkTypes = {
-  water: { name: "水", color: "#4FC3F7", caffeine: 0, hydrationRate: 1.0 },
-  coffee: { name: "コーヒー", color: "#6F4E37", caffeine: 80, hydrationRate: 0.8 },
-  tea: { name: "お茶", color: "#8BC34A", caffeine: 30, hydrationRate: 0.9 },
-  sports: { name: "スポーツドリンク", color: "#FF9800", caffeine: 0, hydrationRate: 1.1 },
-  juice: { name: "ジュース", color: "#FF5722", caffeine: 0, hydrationRate: 0.9 },
-  energy: { name: "エナジードリンク", color: "#bdff22", caffeine: 120, hydrationRate: 0.5 }
-};
-
-
 // ====== 今日の合計 ======
 function getTodayTotal() {
   const today = getDateString();
 
   return drinkLog
-  .filter(e => e.date === today)
-
+    .filter(e => getDateString(new Date(e.time)) === today)
     .reduce((sum, e) => sum + e.amount, 0);
 }
 
@@ -72,8 +70,7 @@ function getTodayCaffeine() {
   const today = getDateString();
 
   return drinkLog
-  .filter(e => e.date === today)
-
+    .filter(e => getDateString(new Date(e.time)) === today)
     .reduce((sum, e) => sum + (drinkTypes[e.type]?.caffeine || 0), 0);
 }
 
@@ -82,8 +79,7 @@ function getTodayEffectiveHydration() {
   const today = getDateString();
 
   return drinkLog
-  .filter(e => e.date === today)
-
+    .filter(e => getDateString(new Date(e.time)) === today)
     .reduce((sum, e) => {
       const rate = drinkTypes[e.type]?.hydrationRate ?? 1.0;
       return sum + e.amount * rate;
