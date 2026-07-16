@@ -8,7 +8,6 @@ drinkLog = drinkLog.map(e => {
   return e;
 });
 
-localStorage.setItem("drinkLog", JSON.stringify(drinkLog));
 
 
 // ====== Drink Types ======
