@@ -168,6 +168,37 @@ function setGoal() {
 }
 
 // ====== ログ表示 ======
+
+function openCalcModal() {
+  document.getElementById("calcModal").style.display = "flex";
+}
+
+function closeCalcModal() {
+  document.getElementById("calcModal").style.display = "none";
+}
+
+function calculateGoal() {
+  const age = Number(document.getElementById("ageInput").value);
+  const weight = Number(document.getElementById("weightInput").value);
+
+  if (!age || !weight) {
+    alert("年齢と体重を入力してください");
+    return;
+  }
+
+  // 必要水分量（一般的な計算式）
+  const neededWater = Math.floor(weight * 35); // 体重 × 35ml
+
+  goal = neededWater;
+  localStorage.setItem("goal", goal);
+
+  updateUI();
+  closeCalcModal();
+
+  alert(`あなたの必要水分量は ${neededWater} ml です！`);
+}
+
+
 function openLogModal() {
   showDrinkLog();
   document.getElementById("logModal").style.display = "flex";
