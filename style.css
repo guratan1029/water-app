@@ -110,7 +110,9 @@ a:hover {
   text-decoration: underline;
 }
 
-.water-btn::before {
-  content: "💧";
-  margin-right: 6px;
+.dots {
+  background-color: #ffffff;
+  background-image: radial-gradient(circle, #06b6d4 5px, transparent 5px), radial-gradient(circle, #06b6d4 5px, transparent 5px);
+  background-position: 0 0, 15px 30px;
+  background-size: 30px 60px;
 }
