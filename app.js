@@ -8,6 +8,7 @@ drinkLog = drinkLog.map(e => {
   return e;
 });
 
+localStorage.setItem("drinkLog", JSON.stringify(drinkLog));
 
 
 // ====== Drink Types ======
@@ -31,13 +32,13 @@ function getDateString(date = new Date()) {
 let goal = Number(localStorage.getItem("goal")) || 1500;
 
 // ====== 日付リセット ======
-const today = getDateString();
-const savedDate = localStorage.getItem("date");
-
-if (savedDate !== today) {
-  localStorage.setItem("date", today);
-  localStorage.setItem("total", 0);
+function getDateString(date = new Date()) {
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, "0");
+  const d = String(date.getDate()).padStart(2, "0");
+  return `${y}-${m}-${d}`;
 }
+
 
 // ====== 記録 ======
 function recordDrink(amount, type) {
@@ -167,37 +168,6 @@ function setGoal() {
 }
 
 // ====== ログ表示 ======
-
-function openCalcModal() {
-  document.getElementById("calcModal").style.display = "flex";
-}
-
-function closeCalcModal() {
-  document.getElementById("calcModal").style.display = "none";
-}
-
-function calculateGoal() {
-  const age = Number(document.getElementById("ageInput").value);
-  const weight = Number(document.getElementById("weightInput").value);
-
-  if (!age || !weight) {
-    alert("年齢と体重を入力してください");
-    return;
-  }
-
-  // 必要水分量（一般的な計算式）
-  const neededWater = Math.floor(weight * 35); // 体重 × 35ml
-
-  goal = neededWater;
-  localStorage.setItem("goal", goal);
-
-  updateUI();
-  closeCalcModal();
-
-  alert(`あなたの必要水分量は ${neededWater} ml です！`);
-}
-
-
 function openLogModal() {
   showDrinkLog();
   document.getElementById("logModal").style.display = "flex";
@@ -301,3 +271,5 @@ function renderWeeklyChart() {
 
 // ====== 初期表示 ======
 updateUI();
+renderWeeklyChart();
+
