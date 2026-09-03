@@ -198,6 +198,13 @@ function showDrinkLog() {
       area.appendChild(p);
     });
 }
+function openCalcModal() {
+  document.getElementById("calcModal").style.display = "flex";
+}
+
+function closeCalcModal() {
+  document.getElementById("calcModal").style.display = "none";
+}
 
 function calculateGoal() {
   const weight = Number(document.getElementById("weightInput").value);
