@@ -1,9 +1,9 @@
 /* ====== 全体 ====== */
-.dots {
-  background-color: #ffffff;
-  background-image: radial-gradient(circle, #06b6d4 5px, transparent 5px), radial-gradient(circle, #06b6d4 5px, transparent 5px);
-  background-position: 0 0, 15px 30px;
-  background-size: 30px 60px;
+body {
+  background-color: #f0f8ff;
+  font-family: "Segoe UI", sans-serif;
+  padding: 10px;
+  color: #333;
 }
 
 /* ====== ボタン ====== */
@@ -85,11 +85,7 @@ input, select {
   animation: fadeIn 0.2s ease;
 }
 
-/* モーダルアニメーション */
-@keyframes fadeIn {
-  from { opacity: 0; transform: scale(0.95); }
-  to { opacity: 1; transform: scale(1); }
-}
+
 
 /* ====== ログ表示 ====== */
 #drinkLogArea p {
@@ -109,4 +105,3 @@ a {
 a:hover {
   text-decoration: underline;
 }
-
