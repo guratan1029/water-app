@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>周辺の水分補給スポット</title>
+  <style>
+    body { margin: 0; }
+    #map {
+      width: 100%;
+      height: 100vh;
+    }
+    h2 {
+      position: absolute;
+      z-index: 10;
+      background: white;
+      padding: 6px 12px;
+      border-radius: 8px;
+      margin: 10px;
+      font-size: 18px;
+    }
+  </style>
+</head>
+
+<body>
+  <h2>周辺の水分補給スポット</h2>
+  <div id="map"></div>
+
+  <!-- map.js を読み込む -->
+  <script src="map.js"></script>
+
+  <!-- Google Maps API（APIキーを入れる） -->
+  <script async
+    src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places&callback=initMap">
+  </script>
+</body>
+</html>
