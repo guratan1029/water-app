@@ -203,8 +203,8 @@ function calculateGoal() {
   goal = goalAmount;
   localStorage.setItem("goal", goal);
 
-  updateDisplay();
-  updateProgressBar();
+  updateUI();
+
 
   alert(`あなたの1日の目標水分量は ${goal} ml です！`);
 
