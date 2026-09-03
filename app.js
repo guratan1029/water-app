@@ -199,6 +199,40 @@ function showDrinkLog() {
     });
 }
 
+function calculateGoal() {
+  const weight = Number(document.getElementById("weightInput").value);
+  const age = Number(document.getElementById("ageInput").value);
+
+  if (!weight || !age) {
+    alert("年齢と体重を入力してください");
+    return;
+  }
+
+  let mlPerKg;
+
+  if (age <= 21) {
+    mlPerKg = 35;
+  } else if (age <= 54) {
+    mlPerKg = 35;
+  } else if (age <= 64) {
+    mlPerKg = 30;
+  } else {
+    mlPerKg = 25;
+  }
+
+  const goalAmount = weight * mlPerKg;
+
+  goal = goalAmount;
+  localStorage.setItem("goal", goal);
+
+  updateDisplay();
+  updateProgressBar();
+
+  alert(`あなたの1日の目標水分量は ${goal} ml です！`);
+
+  closeCalcModal();
+}
+
 // ====== 週間データ ======
 function getWeeklyData() {
   const days = [];
@@ -272,4 +306,3 @@ function renderWeeklyChart() {
 // ====== 初期表示 ======
 updateUI();
 renderWeeklyChart();
-
