@@ -168,36 +168,7 @@ function setGoal() {
 }
 
 // ====== ログ表示 ======
-function openLogModal() {
-  showDrinkLog();
-  document.getElementById("logModal").style.display = "flex";
-}
 
-function closeLogModal() {
-  document.getElementById("logModal").style.display = "none";
-}
-
-function showDrinkLog() {
-  const area = document.getElementById("drinkLogArea");
-  area.innerHTML = "";
-
-  if (drinkLog.length === 0) {
-    area.textContent = "まだ記録がありません";
-    return;
-  }
-
-  drinkLog
-    .slice()
-    .sort((a, b) => a.time - b.time)
-    .forEach(entry => {
-      const date = new Date(entry.time);
-      const typeName = drinkTypes[entry.type]?.name || "不明";
-
-      const p = document.createElement("p");
-      p.textContent = `${date.toLocaleTimeString()} に ${typeName} を ${entry.amount}ml`;
-      area.appendChild(p);
-    });
-}
 function openCalcModal() {
   document.getElementById("calcModal").style.display = "flex";
 }
@@ -239,6 +210,38 @@ function calculateGoal() {
 
   closeCalcModal();
 }
+function openLogModal() {
+  showDrinkLog();
+  document.getElementById("logModal").style.display = "flex";
+}
+
+function closeLogModal() {
+  document.getElementById("logModal").style.display = "none";
+}
+
+function showDrinkLog() {
+  const area = document.getElementById("drinkLogArea");
+  area.innerHTML = "";
+
+  if (drinkLog.length === 0) {
+    area.textContent = "まだ記録がありません";
+    return;
+  }
+
+  drinkLog
+    .slice()
+    .sort((a, b) => a.time - b.time)
+    .forEach(entry => {
+      const date = new Date(entry.time);
+      const typeName = drinkTypes[entry.type]?.name || "不明";
+
+      const p = document.createElement("p");
+      p.textContent = `${date.toLocaleTimeString()} に ${typeName} を ${entry.amount}ml`;
+      area.appendChild(p);
+    });
+}
+
+
 
 // ====== 週間データ ======
 function getWeeklyData() {
