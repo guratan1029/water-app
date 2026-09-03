@@ -1,41 +1,68 @@
+/* ====== 全体 ====== */
 body {
   background-color: #f0f8ff;
-  font-family: sans-serif;
-  padding: 5px;
+  font-family: "Segoe UI", sans-serif;
+  padding: 10px;
+  color: #333;
 }
 
+/* ====== ボタン ====== */
 button {
   padding: 10px 20px;
   font-size: 18px;
+  border: none;
+  border-radius: 8px;
+  background: #4FC3F7;
+  color: white;
+  cursor: pointer;
+  transition: 0.2s;
 }
 
+button:hover {
+  background: #03a9f4;
+  transform: translateY(-2px);
+}
+
+/* ====== 進捗バー ====== */
 .progress {
-  width: 80%;
-  height: 20px;
-  background-color: #5987dd;
-  border-radius: 10px;
-  margin: 10px 0;
+  width: 90%;
+  height: 22px;
+  background-color: #d0e4ff;
+  border-radius: 12px;
+  margin: 15px 0;
   overflow: hidden;
+  box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
 }
 
 #progressBar {
   height: 100%;
   background: linear-gradient(90deg, #c8ffc3, #15fd00);
   width: 0%;
-  color: rgb(38, 77, 252);
+  color: #0044ff;
   text-align: center;
-  line-height: 20px;
-  font-size: 18px;
-  transition: width 0.3s;
+  line-height: 22px;
+  font-size: 16px;
+  font-weight: bold;
+  transition: width 0.3s ease;
 }
 
-#map {
-  width: 100%;
-  height: 400px;
-  margin-top: 20px;
-  border-radius: 8px;
+/* ====== 入力欄 ====== */
+input, select {
+  padding: 8px;
+  font-size: 16px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  margin-top: 5px;
+  width: 150px;
 }
 
+/* ====== よく使う量ボタン ====== */
+#presetButtons button {
+  background: #81d4fa;
+  margin-right: 8px;
+}
+
+/* ====== モーダル ====== */
 .modal {
   display: none;
   position: fixed;
@@ -51,8 +78,34 @@ button {
 .modal-content {
   background: white;
   padding: 20px;
-  border-radius: 10px;
-  width: 80%;
-  max-width: 300px;
+  border-radius: 12px;
+  width: 85%;
+  max-width: 350px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  animation: fadeIn 0.2s ease;
 }
 
+/* モーダルアニメーション */
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* ====== ログ表示 ====== */
+#drinkLogArea p {
+  background: #e1f5fe;
+  padding: 10px;
+  border-radius: 6px;
+  margin: 6px 0;
+  border-left: 5px solid #4FC3F7;
+}
+
+/* ====== リンク ====== */
+a {
+  color: #0077c2;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
