@@ -109,3 +109,8 @@ a {
 a:hover {
   text-decoration: underline;
 }
+
+.water-btn::before {
+  content: "💧";
+  margin-right: 6px;
+}
