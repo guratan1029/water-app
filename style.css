@@ -117,23 +117,41 @@ a:hover {
 
   button {
     background: #1e40af;
+    color: #e2e8f0;
+  }
+
+  button:hover {
+    background: #1e3a8a;
   }
 
   .progress {
-    background: #1e293b;
+    background-color: #1e293b;
   }
 
   #progressBar {
+    background: linear-gradient(90deg, #4ade80, #22c55e);
     color: #fff;
+  }
+
+  input, select {
+    background: #1e293b;
+    color: #e2e8f0;
+    border: 1px solid #334155;
   }
 
   .modal-content {
     background: #1e293b;
     color: #e2e8f0;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.6);
   }
 
   #drinkLogArea p {
     background: #334155;
     border-left: 5px solid #3b82f6;
+    color: #e2e8f0;
+  }
+
+  a {
+    color: #60a5fa;
   }
 }
