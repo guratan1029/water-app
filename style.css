@@ -84,6 +84,10 @@ input, select {
   box-shadow: 0 4px 12px rgba(0,0,0,0.3);
   animation: fadeIn 0.2s ease;
 }
+body.dark {
+  background-color: #0f172a;
+  color: #e2e8f0;
+}
 
 
 

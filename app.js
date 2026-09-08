@@ -83,6 +83,10 @@ function checkOverdrink(amount) {
     alert("短時間での飲みすぎに注意してください！");
   }
 }
+document.getElementById("themeToggle").onclick = () => {
+  document.body.classList.toggle("dark");
+};
+
 
 // ====== UI ======
 function updateUI() {
