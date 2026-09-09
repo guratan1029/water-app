@@ -147,6 +147,7 @@ function addWater(amountFromPreset = null) {
   if (amountFromPreset === null) {
     document.getElementById("drinkInput").value = "";
   }
+  renderWeeklyChart()
 }
 
 // ====== リセット ======
@@ -159,6 +160,7 @@ function resetwater() {
   localStorage.setItem("drinkLog", JSON.stringify(drinkLog));
 
   updateUI();
+  renderWeeklyChart()
 }
 
 // ====== 目標設定 ======
