@@ -143,11 +143,11 @@ function addWater(amountFromPreset = null) {
   checkOverdrink(amount);
   recordDrink(amount, drinkType);
   updateUI();
-
+  renderWeeklyChart();
+  
   if (amountFromPreset === null) {
     document.getElementById("drinkInput").value = "";
   }
-  renderWeeklyChart()
 }
 
 // ====== リセット ======
