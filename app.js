@@ -103,6 +103,9 @@ function updateUI() {
   const bar = document.getElementById("progressBar");
   bar.style.width = percent + "%";
   bar.textContent = `${Math.floor(percent)}%`;
+  document.getElementById("lastDrinkElapsed").textContent =
+  `最後に飲んだのは：${getElapsedSinceLastDrink()}`;
+
 
   updatePresetButtons();
 }
@@ -247,6 +250,20 @@ function showDrinkLog() {
     });
 }
 
+function getElapsedSinceLastDrink() {
+  if (drinkLog.length === 0) return "まだ飲んでいません";
+
+  const last = drinkLog[drinkLog.length - 1].time;
+  const now = Date.now();
+
+  const diffMs = now - last;
+  const diffMin = Math.floor(diffMs / 60000);
+  const diffHour = Math.floor(diffMin / 60);
+
+  if (diffMin < 1) return "たった今飲みました";
+  if (diffMin < 60) return `${diffMin} 分前`;
+  return `${diffHour} 時間前`;
+}
 
 
 // ====== 週間データ ======
