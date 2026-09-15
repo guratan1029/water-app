@@ -348,6 +348,7 @@ function renderWeeklyChart() {
   const ctx = document.getElementById("weekChart");
   weekChartInstance = new Chart(ctx, {
     type: "line",
+    
     data: {
       labels,
       datasets: [{
@@ -359,6 +360,8 @@ function renderWeeklyChart() {
         tension: 0.3, // ← 線を少し滑らかに
         pointRadius: 5,
         pointBackgroundColor: "rgba(54, 162, 235, 1)"
+        
+        
       }]
     },
     options: {
@@ -366,8 +369,10 @@ function renderWeeklyChart() {
         y: { beginAtZero: true }
       }
     }
+    
   });
 }
+
 
 
 // ====== 初期表示 ======
