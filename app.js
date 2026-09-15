@@ -368,8 +368,7 @@ function renderWeeklyChart() {
       }]
     },
     options: {
-      responsive: true,
-      maintainAspectRatio: false,  
+      responsive: true, 
       scales: {
         y: { beginAtZero: true }
       }
