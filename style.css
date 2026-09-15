@@ -148,9 +148,3 @@ a:hover {
     color: #e2e8f0 !important;
   }
 }
-
-#weekChart {
-  width: 100%;
-  max-width: 600px;
-  height: 300px;
-}
