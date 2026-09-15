@@ -1,6 +1,3 @@
-
-
-
 // ====== 古いデータの修正 ======
 let drinkLog = JSON.parse(localStorage.getItem("drinkLog")) || [];
 
@@ -368,16 +365,13 @@ function renderWeeklyChart() {
       }]
     },
     options: {
-      responsive: true, 
       scales: {
         y: { beginAtZero: true }
       }
     }
     
-    
   });
 }
-
 
 
 
