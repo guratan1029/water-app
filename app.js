@@ -1,10 +1,3 @@
-function repeat() {
-  document.getElementById("lastDrinkElapsed").textContent =
-  `最後に飲んだのは：${getElapsedSinceLastDrink()}`;
-
-  document.getElementById("recommendedNextDrink").textContent =
-  `おすすめ飲水タイミング：${getRecommendedNextDrinkTime()}`;
-}
 
 
 
@@ -385,9 +378,14 @@ function renderWeeklyChart() {
     
   });
 }
-setInterval(() => {
-  repeat(); // ← 毎分動かしたい関数
-}, 60 * 1000);
+function repeat() {
+  document.getElementById("lastDrinkElapsed").textContent =
+  `最後に飲んだのは：${getElapsedSinceLastDrink()}`;
+
+  document.getElementById("recommendedNextDrink").textContent =
+  `おすすめ飲水タイミング：${getRecommendedNextDrinkTime()}`;
+}
+
 
 
 
