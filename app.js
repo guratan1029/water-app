@@ -106,6 +106,9 @@ function updateUI() {
   document.getElementById("lastDrinkElapsed").textContent =
   `最後に飲んだのは：${getElapsedSinceLastDrink()}`;
 
+  document.getElementById("recommendedNextDrink").textContent =
+  `おすすめ飲水タイミング：${getRecommendedNextDrinkTime()}`;
+
 
   updatePresetButtons();
 }
@@ -299,6 +302,36 @@ function getWeeklyData() {
 
   return days;
 }
+function getAverageDrinkInterval() {
+  if (drinkLog.length < 2) return null;
+
+  let intervals = [];
+
+  for (let i = 1; i < drinkLog.length; i++) {
+    const prev = drinkLog[i - 1].time;
+    const curr = drinkLog[i].time;
+    intervals.push(curr - prev);
+  }
+
+  const avgMs = intervals.reduce((a, b) => a + b, 0) / intervals.length;
+  const avgMin = Math.floor(avgMs / 60000);
+
+  return avgMin;
+}
+
+function getRecommendedNextDrinkTime() {
+  const avg = getAverageDrinkInterval();
+  if (!avg) return "まだデータが足りません";
+
+  const last = drinkLog[drinkLog.length - 1].time;
+  const next = last + avg * 60000;
+
+  const diffMin = Math.floor((next - Date.now()) / 60000);
+
+  if (diffMin <= 0) return "そろそろ飲むと良いです！";
+  return `${diffMin} 分後に飲むと良いです`;
+}
+
 
 
 let weekChartInstance = null;
@@ -335,6 +368,7 @@ function renderWeeklyChart() {
     }
   });
 }
+
 
 // ====== 初期表示 ======
 updateUI();
