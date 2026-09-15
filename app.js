@@ -378,14 +378,6 @@ function renderWeeklyChart() {
     
   });
 }
-function repeat() {
-  document.getElementById("lastDrinkElapsed").textContent =
-  `最後に飲んだのは：${getElapsedSinceLastDrink()}`;
-
-  document.getElementById("recommendedNextDrink").textContent =
-  `おすすめ飲水タイミング：${getRecommendedNextDrinkTime()}`;
-}
-
 
 
 
