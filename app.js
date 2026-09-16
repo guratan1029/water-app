@@ -329,12 +329,11 @@ function renderWeeklyChart() {
       }]
     },
     options: {
-      responsive: true,
-      maintainAspectRatio: false,   // ← これが必須！
       scales: {
         y: { beginAtZero: true }
       }
     }
+    
     
   });
 }
