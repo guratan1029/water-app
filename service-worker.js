@@ -63,3 +63,14 @@ self.addEventListener("install", () => {
     }
   });
   
+  // ====== Web Push（Safari PWA 用） ======
+self.addEventListener("push", event => {
+  const data = event.data?.text() || "水分補給の時間です！";
+
+  event.waitUntil(
+    self.registration.showNotification("Water App", {
+      body: data,
+      icon: "/icon.png"
+    })
+  );
+});

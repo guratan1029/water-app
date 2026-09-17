@@ -1,3 +1,17 @@
+// 通知許可をリクエスト
+async function requestNotificationPermission() {
+  const permission = await Notification.requestPermission();
+  console.log("通知許可:", permission);
+}
+
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("/service-worker.js")
+    .then(reg => {
+      console.log("SW registered:", reg);
+    });
+}
+
+
 // ====== 古いデータの修正 ======
 let drinkLog = JSON.parse(localStorage.getItem("drinkLog")) || [];
 
@@ -337,6 +351,8 @@ function renderWeeklyChart() {
     
   });
 }
+
+requestNotificationPermission();
 
 // ====== 初期表示 ======
 updateUI();
