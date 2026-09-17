@@ -278,7 +278,8 @@ function getWeeklyData() {
 
     days.push({
       date: getDateString(d),
-      total: 0
+      total: 0,
+      caffeine: 0
     });
   }
 
@@ -294,6 +295,7 @@ function getWeeklyData() {
 
     if (day) {
       day.total += entry.amount;
+      day.caffeine += (drinkTypes[entry.type]?.caffeine  || 0);
     }
   });
 
@@ -317,7 +319,8 @@ function renderWeeklyChart() {
     type: "line",
     data: {
       labels,
-      datasets: [{
+      datasets: [
+        {
         label: "1日の摂取量 (ml)",
         data: totals,
         borderColor: "rgba(54, 162, 235, 1)",
@@ -326,7 +329,18 @@ function renderWeeklyChart() {
         tension: 0.3, // ← 線を少し滑らかに
         pointRadius: 5,
         pointBackgroundColor: "rgba(54, 162, 235, 1)"
-      }]
+      },
+      {
+        label: "カフェイン量(mg)",
+        data: caffeine,
+        borderColor: "rgba(255, 99, 132, 1)",
+        backgroundColor: "rgba(255,99,132,0.2)",
+        borderWidth: 2,
+        tension: 0.3,
+        pointRadius: 5,
+        pointBackgroundColor: "rgba(25.99.132.1)"
+      }
+    ]
     },
     options: {
       scales: {
