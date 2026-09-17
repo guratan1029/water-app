@@ -270,7 +270,7 @@ function getElapsedSinceLastDrink() {
 function getWeeklyData() {
   const days = [];
 
-  // 過去7日分の空データ
+  // 過去7日分の空データを作る
   for (let i = 6; i >= 0; i--) {
     const d = new Date();
     d.setHours(0, 0, 0, 0);
@@ -278,14 +278,13 @@ function getWeeklyData() {
 
     days.push({
       date: getDateString(d),
-      total: 0,        // 水分量
-      caffeine: 0      // カフェイン量
+      total: 0
     });
   }
 
   // ログを日付ごとに集計
   drinkLog.forEach(entry => {
-    if (!entry.time) return;
+    if (!entry.time) return; // ← time が無い古いデータを無視
 
     const entryDate = new Date(entry.time);
     entryDate.setHours(0, 0, 0, 0);
@@ -295,13 +294,11 @@ function getWeeklyData() {
 
     if (day) {
       day.total += entry.amount;
-      day.caffeine += (drinkTypes[entry.type]?.caffeine || 0);
     }
   });
 
   return days;
 }
-
 
 
 let weekChartInstance = null;
@@ -310,7 +307,6 @@ function renderWeeklyChart() {
   const data = getWeeklyData();
   const labels = data.map(d => d.date);
   const totals = data.map(d => d.total);
-  const caffeine = data.map(d => d.caffeine);
 
   if (weekChartInstance) {
     weekChartInstance.destroy();
@@ -321,36 +317,24 @@ function renderWeeklyChart() {
     type: "line",
     data: {
       labels,
-      datasets: [
-        {
-          label: "1日の摂取量 (ml)",
-          data: totals,
-          borderColor: "rgba(54, 162, 235, 1)",
-          backgroundColor: "rgba(54, 162, 235, 0.2)",
-          borderWidth: 2,
-          tension: 0.3,
-          pointRadius: 5,
-          pointBackgroundColor: "rgba(54, 162, 235, 1)"
-        },
-        {
-          label: "カフェイン量 (mg)",
-          data: caffeine,
-          borderColor: "rgba(255, 99, 132, 1)",
-          backgroundColor: "rgba(255, 99, 132, 0.2)",
-          borderWidth: 2,
-          tension: 0.3,
-          pointRadius: 5,
-          pointBackgroundColor: "rgba(255, 99, 132, 1)"
-        }
-      ]
+      datasets: [{
+        label: "1日の摂取量 (ml)",
+        data: totals,
+        borderColor: "rgba(54, 162, 235, 1)",
+        backgroundColor: "rgba(54, 162, 235, 0.2)",
+        borderWidth: 2,
+        tension: 0.3, // ← 線を少し滑らかに
+        pointRadius: 5,
+        pointBackgroundColor: "rgba(54, 162, 235, 1)"
+      }]
     },
     options: {
-      responsive: true,
-      maintainAspectRatio: false,
       scales: {
         y: { beginAtZero: true }
       }
     }
+    
+    
   });
 }
 
