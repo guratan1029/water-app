@@ -279,7 +279,7 @@ function getWeeklyData() {
     days.push({
       date: getDateString(d),
       total: 0,        // 水分量
-      caffeine: 0      // ← カフェイン量を追加
+      caffeine: 0      // カフェイン量
     });
   }
 
@@ -345,6 +345,8 @@ function renderWeeklyChart() {
       ]
     },
     options: {
+      responsive: true,
+      maintainAspectRatio: false,
       scales: {
         y: { beginAtZero: true }
       }
