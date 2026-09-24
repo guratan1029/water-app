@@ -149,3 +149,13 @@ a:hover {
   }
 }
 
+#total {
+  background: #e0f7ff;
+  padding: 16px;
+  border-radius: 12px;
+  font-size: 20px;
+  font-weight: bold;
+  color: #0a3d62;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  margin-bottom: 12px;
+}
