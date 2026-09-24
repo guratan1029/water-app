@@ -149,13 +149,33 @@ a:hover {
   }
 }
 
+/* ===== 今日の摂取量カード ===== */
 #total {
+  width: 180px;                /* 小さめのカード */
   background: #e0f7ff;
-  padding: 16px;
-  border-radius: 12px;
-  font-size: 20px;
-  font-weight: bold;
-  color: #0a3d62;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-  margin-bottom: 12px;
+  padding: 12px;
+  border-radius: 10px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+  margin: 10px 0;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
 }
+
+/* 上部のタイトル */
+#total .title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #0a3d62;
+  margin-bottom: 6px;
+}
+
+/* 中央の値（数字） */
+#total .value {
+  font-size: 28px;
+  font-weight: bold;
+  color: #0077c2;
+}
+
