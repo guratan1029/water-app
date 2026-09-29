@@ -108,14 +108,9 @@ function updateUI() {
   const caffeine = getTodayCaffeine();
   const effective = getTodayEffectiveHydration();
 
-  document.getElementById("totalValue").textContent =
-  `${total} ml`;
-
-document.getElementById("caffeineDisplay").textContent =
-  `${caffeine} mg`;
-
-document.getElementById("effectiveDisplay").textContent =
-  `${Math.floor(effective)} ml`;
+  document.getElementById("totalValue").textContent = `${total} ml`;
+  document.getElementById("caffeineDisplay").textContent = `今日のカフェイン：${caffeine} mg`;
+  document.getElementById("effectiveDisplay").textContent = `実質水分量：${Math.floor(effective)} ml`;
   document.getElementById("goalDisplay").textContent = `目標：${goal} ml`;
 
   const percent = Math.min(100, (total / goal) * 100);
