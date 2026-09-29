@@ -42,18 +42,24 @@
   <br>
 
   <!-- 今日の合計 -->
-  <p id="total">
-    <span class="title">今日の摂取量</span>
-    <span class="value" id="totalValue">0 ml</span>
-  </p>
-  <p id="total"></p>
-    <span class="title">今日のカフェイン</span>
-    <span class="value" id="caffeineDisplay">0 mg</span>
-  </p>
-  <p id="total"></p>
-    <span class="title">今日の摂取量</span>
-    <span class="value" id="effectiveDisplay">0 ml</span>
-  </p>
+  <div class="stats-row">
+
+    <div class="stat-card">
+      <span class="title">今日の摂取量</span>
+      <span class="value" id="totalValue">0 ml</span>
+    </div>
+  
+    <div class="stat-card">
+      <span class="title">今日のカフェイン</span>
+      <span class="value" id="caffeineDisplay">0 mg</span>
+    </div>
+  
+    <div class="stat-card">
+      <span class="title">実質摂取量</span>
+      <span class="value" id="effectiveDisplay">0 ml</span>
+    </div>
+  
+  </div>
   <p id="lastDrinkElapsed">最後に飲んだ時間：未記録</p>
 
   <p id="recommendedNextDrink">おすすめ飲水タイミング：計算中…</p>
