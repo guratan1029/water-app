@@ -152,7 +152,7 @@ a:hover {
 /* ===== 今日の摂取量カード ===== */
 #total {
   width: 180px;                /* 小さめのカード */
-  background: #3a5863;
+  background: #1e40af;
   padding: 12px;
   border-radius: 10px;
   box-shadow: 0 3px 8px rgba(0,0,0,0.15);
@@ -168,7 +168,7 @@ a:hover {
 #total .title {
   font-size: 14px;
   font-weight: 600;
-  color: #0a3d62;
+  color: #7ba5c4;
   margin-bottom: 6px;
 }
 
@@ -176,6 +176,6 @@ a:hover {
 #total .value {
   font-size: 28px;
   font-weight: bold;
-  color: #0077c2;
+  color: #000000;
 }
 
