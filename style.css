@@ -150,34 +150,34 @@ a:hover {
 }
 
 /* ===== 今日の摂取量カード ===== */
-.stats{
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap; /* スマホで収まらなければ改行 */
-}
-
-.total{
-  flex: 1;
-  min-width: 120px;
+.total {
+  width: 180px;
+  background: #1e40af;
+  padding: 12px;
+  border-radius: 10px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+  margin: 10px 0;
 
   display: flex;
   flex-direction: column;
-
-  background: #2445c7;
-  border-radius: 16px;
-  padding: 20px;
-
+  align-items: center;
   text-align: center;
 }
 
-.title{
-  color: #00a8ff;
+.total .title {
   font-size: 14px;
-  margin-bottom: 8px;
+  font-weight: 600;
+  color: #0077c2;
+  margin-bottom: 6px;
 }
 
-.value{
-  color: white;
-  font-size: 32px;
+.total .value {
+  font-size: 28px;
   font-weight: bold;
+  color: #e2e8f0;
+}
+.totals{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
 }
