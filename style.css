@@ -168,7 +168,7 @@ a:hover {
 #total .title {
   font-size: 14px;
   font-weight: 600;
-  color: #7ba5c4;
+  color: #0077c2;
   margin-bottom: 6px;
 }
 
@@ -176,6 +176,6 @@ a:hover {
 #total .value {
   font-size: 28px;
   font-weight: bold;
-  color: #000000;
+  color: #e2e8f0;
 }
 
