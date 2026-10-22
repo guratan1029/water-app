@@ -21,8 +21,14 @@ function initMap() {
       new google.maps.Marker({
         position: userPos,
         map: map,
-        title: "現在地"
+        label: "現在地"
       });
+      
+      console.log(
+        "現在地",
+        userPos.lat,
+        userPos.lng
+      );
 
     },
     (error) => {
@@ -31,14 +37,3 @@ function initMap() {
     }
   );
 }
-new google.maps.Marker({
-  position: userPos,
-  map: map,
-  label: "現在地"
-});
-
-console.log(
-  "現在地",
-  userPos.lat,
-  userPos.lng
-);
