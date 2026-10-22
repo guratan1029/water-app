@@ -1,33 +1,35 @@
 function initMap() {
 
-  navigator.geolocation.getCurrentPosition(
-    (position) => {
+  const map = new google.maps.Map(
+    document.getElementById("map"),
+    {
+      center: { lat: 35.681236, lng: 139.767125 },
+      zoom: 15
+    }
+  );
 
-      const current = {
-        lat: position.coords.latitude,
-        lng: position.coords.longitude
+  navigator.geolocation.getCurrentPosition(
+    (pos) => {
+
+      const userPos = {
+        lat: pos.coords.latitude,
+        lng: pos.coords.longitude
       };
 
-      const map = new google.maps.Map(
-        document.getElementById("map"),
-        {
-          center: current,
-          zoom: 16
-        }
-      );
+      map.setCenter(userPos);
 
       new google.maps.Marker({
-        position: current,
+        position: userPos,
         map: map,
         title: "現在地"
       });
 
     },
     (error) => {
-      console.error(error);
+      console.log(error);
+      alert(error.message);
     }
   );
-
 }
 new google.maps.Marker({
   position: userPos,
