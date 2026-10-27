@@ -54,8 +54,11 @@ function initMap() {
     
 
   );
+  
   const service =
   new google.maps.places.PlacesService(map);
+
+console.log("Places作成");
 
 service.nearbySearch(
   {
@@ -65,8 +68,9 @@ service.nearbySearch(
   },
   (results, status) => {
 
-    console.log("status", status);
-    console.log("results", results);
+    console.log("検索結果");
+    console.log(status);
+    console.log(results);
 
   }
 );
