@@ -34,16 +34,8 @@ function initMap() {
         userPos.lng
       );
 
-      document
-        .getElementById("findStore")
-        .addEventListener("click", () => {
-
-          const url =
-            `https://www.google.com/maps/search/コンビニ/@${userPos.lat},${userPos.lng},15z`;
-
-          window.open(url, "_blank");
-
-        });
+      
+        
 
     },
 
