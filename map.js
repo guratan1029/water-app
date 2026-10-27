@@ -1,63 +1,57 @@
-let map;
+function initMap() {
 
-navigator.geolocation.getCurrentPosition(
+  const map = new google.maps.Map(
+    document.getElementById("map"),
+    {
+      center: {
+        lat: 35.681236,
+        lng: 139.767125
+      },
+      zoom: 15
+    }
+  );
 
-  async (pos) => {
+  navigator.geolocation.getCurrentPosition(
 
-    const lat = pos.coords.latitude;
-    const lon = pos.coords.longitude;
+    (pos) => {
 
-    map = L.map('map').setView([lat, lon], 16);
+      const userPos = {
+        lat: pos.coords.latitude,
+        lng: pos.coords.longitude
+      };
 
-    L.tileLayer(
-      'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-      {
-        attribution: '&copy; OpenStreetMap contributors'
-      }
-    ).addTo(map);
+      map.setCenter(userPos);
 
-    // 現在地マーカー
-    L.marker([lat, lon])
-      .addTo(map)
-      .bindPopup("📍現在地");
+      new google.maps.Marker({
+        position: userPos,
+        map: map,
+        label: "現在地"
+      });
 
-    // Overpass API
-    const query = `
-      [out:json];
-      (
-        node["shop"="convenience"](around:1000,${lat},${lon});
-      );
-      out;
-    `;
-
-    const response = await fetch(
-      "https://overpass-api.de/api/interpreter",
-      {
-        method: "POST",
-        body: query
-      }
-    );
-
-    const data = await response.json();
-
-    data.elements.forEach((place) => {
-
-      L.marker([
-        place.lat,
-        place.lon
-      ])
-      .addTo(map)
-      .bindPopup(
-        "🏪 " +
-        (place.tags.name || "コンビニ")
+      console.log(
+        "現在地",
+        userPos.lat,
+        userPos.lng
       );
 
-    });
+      document
+        .getElementById("findStore")
+        .addEventListener("click", () => {
 
-  },
+          const url =
+            `https://www.google.com/maps/search/コンビニ/@${userPos.lat},${userPos.lng},15z`;
 
-  () => {
-    alert("位置情報を取得できませんでした");
-  }
+          window.open(url, "_blank");
 
-);
+        });
+
+    },
+
+    (error) => {
+      console.log(error);
+      alert("位置情報を取得できませんでした");
+    }
+
+  );
+
+}
