@@ -3,10 +3,7 @@ function initMap() {
   const map = new google.maps.Map(
     document.getElementById("map"),
     {
-      center: {
-        lat: 35.681236,
-        lng: 139.767125
-      },
+      center: { lat: 35.681236, lng: 139.767125 },
       zoom: 15
     }
   );
@@ -28,12 +25,6 @@ function initMap() {
         label: "現在地"
       });
 
-      console.log(
-        "現在地",
-        userPos.lat,
-        userPos.lng
-      );
-
       document
         .getElementById("findStore")
         .addEventListener("click", () => {
@@ -47,8 +38,7 @@ function initMap() {
 
     },
 
-    (error) => {
-      console.log(error);
+    () => {
       alert("位置情報を取得できませんでした");
     }
 
