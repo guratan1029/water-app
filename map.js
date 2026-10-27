@@ -34,8 +34,16 @@ function initMap() {
         userPos.lng
       );
 
-      
-        
+      document
+        .getElementById("findStore")
+        .addEventListener("click", () => {
+
+          const url =
+            `https://www.google.com/maps/search/コンビニ/@${userPos.lat},${userPos.lng},16z`;
+
+          window.location.href = url;
+
+        });
 
     },
 
@@ -45,40 +53,5 @@ function initMap() {
     }
 
   );
-  let nearestPlace = null;
-let nearestDistance = Infinity;
-
-results.forEach((place) => {
-
-  const lat =
-    place.geometry.location.lat();
-
-  const lng =
-    place.geometry.location.lng();
-
-  const distance =
-    Math.sqrt(
-      Math.pow(userPos.lat - lat, 2) +
-      Math.pow(userPos.lng - lng, 2)
-    );
-
-  if (distance < nearestDistance) {
-    nearestDistance = distance;
-    nearestPlace = place;
-  }
-
-});document
-.getElementById("findStore")
-.addEventListener("click", () => {
-
-  const destination =
-    nearestPlace.name;
-
-  const url =
-`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(destination)}&travelmode=walking`;
-
-  window.location.href = url;
-
-});
 
 }
