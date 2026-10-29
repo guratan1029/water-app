@@ -19,6 +19,62 @@ function initMap() {
         lat: pos.coords.latitude,
         lng: pos.coords.longitude
       };
+      const stores = [
+        {
+          name: "セブンイレブン",
+          lat: userPos.lat + 0.001,
+          lng: userPos.lng + 0.001
+        },
+        {
+          name: "ローソン",
+          lat: userPos.lat - 0.001,
+          lng: userPos.lng + 0.001
+        },
+        {
+          name: "ファミリーマート",
+          lat: userPos.lat,
+          lng: userPos.lng - 0.001
+        }
+      ];
+      let nearestStore = stores[0];
+let nearestDistance = Infinity;
+
+stores.forEach((store) => {
+
+  const distance = Math.sqrt(
+    Math.pow(userPos.lat - store.lat, 2) +
+    Math.pow(userPos.lng - store.lng, 2)
+  );
+
+  if (distance < nearestDistance) {
+    nearestDistance = distance;
+    nearestStore = store;
+  }
+
+});
+
+console.log("最寄り店舗:", nearestStore.name);
+      
+      stores.forEach((store) => {
+      
+        const marker = new google.maps.Marker({
+          position: {
+            lat: store.lat,
+            lng: store.lng
+          },
+          map: map,
+          title: store.name
+        });
+      
+        const info = new google.maps.InfoWindow({
+          content: `🏪 ${store.name}`
+        });
+      
+        marker.addListener("click", () => {
+          info.open(map, marker);
+        });
+      
+      });
 
       map.setCenter(userPos);
 
