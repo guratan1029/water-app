@@ -151,6 +151,16 @@ console.log("最寄り店舗:", nearestStore.name);
     
 
   );
+  document
+  .getElementById("findStore")
+  .addEventListener("click", () => {
+
+    const url =
+      `https://www.google.com/maps/dir/?api=1&destination=${nearestStore.lat},${nearestStore.lng}&travelmode=walking`;
+
+    window.location.href = url;
+
+  });
   
 
 }
