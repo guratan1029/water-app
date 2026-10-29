@@ -55,24 +55,5 @@ function initMap() {
 
   );
   
-  const service =
-  new google.maps.places.PlacesService(map);
-
-console.log("Places作成");
-
-service.nearbySearch(
-  {
-    location: userPos,
-    radius: 1000,
-    keyword: "コンビニ"
-  },
-  (results, status) => {
-
-    console.log("検索結果");
-    console.log(status);
-    console.log(results);
-
-  }
-);
 
 }
