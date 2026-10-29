@@ -109,15 +109,32 @@ function initMap() {
 
       // ボタン押したら最寄り店舗へナビ
       document
-        .getElementById("findStore")
-        .addEventListener("click", () => {
+  .getElementById("findStore")
+  .addEventListener("click", () => {
 
-          const url =
-            `https://www.google.com/maps/dir/?api=1&destination=${nearestStore.lat},${nearestStore.lng}&travelmode=walking`;
+    new google.maps.Polyline({
+      path: [
+        userPos,
+        {
+          lat: nearestStore.lat,
+          lng: nearestStore.lng
+        }
+      ],
+      geodesic: true,
+      strokeColor: "#2563eb",
+      strokeOpacity: 1.0,
+      strokeWeight: 5,
+      map: map
+    });
 
-          window.location.href = url;
+  });
+  const distance =
+  nearestDistance * 111000;
 
-        });
+alert(
+  `最寄り: ${nearestStore.name}
+距離: ${Math.round(distance)}m`
+);
 
     },
 
