@@ -33,6 +33,47 @@ function initMap() {
         userPos.lat,
         userPos.lng
       );
+      new google.maps.Marker({
+        position: {
+          lat: userPos.lat + 0.001,
+          lng: userPos.lng + 0.001
+        },
+        map: map,
+        title: "セブンイレブン（テスト）"
+      });
+      
+      new google.maps.Marker({
+        position: {
+          lat: userPos.lat - 0.001,
+          lng: userPos.lng + 0.001
+        },
+        map: map,
+        title: "ローソン（テスト）"
+      });
+      
+      new google.maps.Marker({
+        position: {
+          lat: userPos.lat,
+          lng: userPos.lng - 0.001
+        },
+        map: map,
+        title: "ファミリーマート（テスト）"
+      });
+      const marker = new google.maps.Marker({
+        position: {
+          lat: userPos.lat + 0.001,
+          lng: userPos.lng + 0.001
+        },
+        map: map
+      });
+      
+      const info = new google.maps.InfoWindow({
+        content: "🏪 セブンイレブン"
+      });
+      
+      marker.addListener("click", () => {
+        info.open(map, marker);
+      });
 
       document
         .getElementById("findStore")
