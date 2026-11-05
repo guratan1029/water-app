@@ -105,7 +105,10 @@ function initMap() {
             document
             .getElementById("findStore")
             .addEventListener("click", () => {
-    
+          
+              console.log("ボタン押された");
+          
+            
               const directionsService =
                 new google.maps.DirectionsService();
     
