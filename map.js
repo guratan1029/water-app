@@ -1,5 +1,7 @@
 function initMap() {
 
+  console.log("OVERPASS VERSION");
+
   const map = new google.maps.Map(
     document.getElementById("map"),
     {
@@ -22,7 +24,7 @@ function initMap() {
 
       map.setCenter(userPos);
 
-      // 現在地マーカー
+      // 現在地
       new google.maps.Marker({
         position: userPos,
         map: map,
@@ -35,18 +37,20 @@ function initMap() {
         userPos.lng
       );
 
-      // コンビニ・自販機取得
+      // コンビニ・自販機検索
       const query = `
 [out:json];
 (
   node["shop"="convenience"]
-    (around:1000,${userPos.lat},${userPos.lng});
+    (around:3000,${userPos.lat},${userPos.lng});
 
   node["amenity"="vending_machine"]
-    (around:1000,${userPos.lat},${userPos.lng});
+    (around:3000,${userPos.lat},${userPos.lng});
 );
 out;
 `;
+
+      console.log("fetch開始");
 
       fetch(
         "https://overpass-api.de/api/interpreter",
@@ -64,6 +68,21 @@ out;
         );
 
         data.elements.forEach((place) => {
+
+          console.log(place);
+
+          if (
+            typeof place.lat === "undefined" ||
+            typeof place.lon === "undefined"
+          ) {
+            return;
+          }
+
+          console.log(
+            "座標:",
+            place.lat,
+            place.lon
+          );
 
           let icon = "🏪";
 
@@ -84,18 +103,21 @@ out;
               map: map,
               title:
                 place.tags?.name ||
-                "スポット"
+                "スポット",
+
+              icon: {
+                url:
+                  "http://maps.google.com/mapfiles/ms/icons/red-dot.png"
+              }
             });
 
           const info =
             new google.maps.InfoWindow({
-              content: `
-                ${icon}
-                ${
+              content:
+                `${icon} ${
                   place.tags?.name ||
                   "名称不明"
-                }
-              `
+                }`
             });
 
           marker.addListener(
