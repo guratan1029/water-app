@@ -42,12 +42,14 @@ function initMap() {
 [out:json];
 (
   node["shop"="convenience"]
-    (around:3000,${userPos.lat},${userPos.lng});
+    (around:5000,${userPos.lat},${userPos.lng});
 
   node["amenity"="vending_machine"]
-    (around:3000,${userPos.lat},${userPos.lng});
+    (around:5000,${userPos.lat},${userPos.lng});
+
+  node["shop"="supermarket"]
+    (around:5000,${userPos.lat},${userPos.lng});
 );
-out;
 `;
 
       console.log("fetch開始");
