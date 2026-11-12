@@ -24,7 +24,7 @@ function initMap() {
 
       map.setCenter(userPos);
 
-      // 現在地
+      // 現在地マーカー
       new google.maps.Marker({
         position: userPos,
         map: map,
@@ -37,6 +37,7 @@ function initMap() {
         userPos.lng
       );
 
+      // コンビニ・自販機・スーパー検索
       const query = `
 [out:json];
 (
@@ -49,7 +50,7 @@ function initMap() {
   node["shop"="supermarket"]
     (around:10000,${userPos.lat},${userPos.lng});
 );
-out;
+out body;
 `;
 
       console.log("fetch開始");
@@ -71,6 +72,8 @@ out;
 
         data.elements.forEach((place) => {
 
+          console.log(place);
+
           if (
             typeof place.lat === "undefined" ||
             typeof place.lon === "undefined"
@@ -78,20 +81,21 @@ out;
             return;
           }
 
+          console.log(
+            "マーカー生成",
+            place.lat,
+            place.lon,
+            place.tags?.name
+          );
+
           let iconText = "🏪";
-          let markerColor =
-            "red-dot.png";
 
           if (
             place.tags &&
             place.tags.amenity ===
             "vending_machine"
           ) {
-
             iconText = "🥤";
-            markerColor =
-              "blue-dot.png";
-
           }
 
           if (
@@ -99,41 +103,28 @@ out;
             place.tags.shop ===
             "supermarket"
           ) {
-
             iconText = "🛒";
-            markerColor =
-              "green-dot.png";
-
           }
 
           const marker =
             new google.maps.Marker({
               position: {
-                lat: place.lat,
-                lng: place.lon
+                lat: Number(place.lat),
+                lng: Number(place.lon)
               },
-
               map: map,
-
               title:
                 place.tags?.name ||
-                "スポット",
-
-              icon: {
-                url:
-                  `https://maps.google.com/mapfiles/ms/icons/${markerColor}`
-              }
+                "スポット"
             });
 
           const info =
             new google.maps.InfoWindow({
-              content: `
-                ${iconText}
-                ${
+              content:
+                `${iconText} ${
                   place.tags?.name ||
                   "名称不明"
-                }
-              `
+                }`
             });
 
           marker.addListener(
