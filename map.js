@@ -19,7 +19,7 @@ function initMap() {
         lat: pos.coords.latitude,
         lng: pos.coords.longitude
       };
-    
+
       map.setCenter(userPos);
 
       // 現在地マーカー
@@ -35,138 +35,105 @@ function initMap() {
         userPos.lng
       );
 
-      // テスト店舗
-      const stores = [
+      // コンビニ・自販機取得
+      const query = `
+[out:json];
+(
+  node["shop"="convenience"]
+    (around:1000,${userPos.lat},${userPos.lng});
+
+  node["amenity"="vending_machine"]
+    (around:1000,${userPos.lat},${userPos.lng});
+);
+out;
+`;
+
+      fetch(
+        "https://overpass-api.de/api/interpreter",
         {
-          name: "セブンイレブン",
-          lat: userPos.lat + 0.001,
-          lng: userPos.lng + 0.001
-        },
-        {
-          name: "ローソン",
-          lat: userPos.lat - 0.001,
-          lng: userPos.lng + 0.001
-        },
-        {
-          name: "ファミリーマート",
-          lat: userPos.lat,
-          lng: userPos.lng - 0.001
+          method: "POST",
+          body: query
         }
-      ];
+      )
+      .then(response => response.json())
+      .then(data => {
 
-      // 店舗表示
-      stores.forEach((store) => {
-
-        const marker = new google.maps.Marker({
-          position: {
-            lat: store.lat,
-            lng: store.lng
-          },
-          map: map,
-          title: store.name
-        });
-
-        const info = new google.maps.InfoWindow({
-          content: `🏪 ${store.name}`
-        });
-
-        marker.addListener("click", () => {
-          info.open({
-            anchor: marker,
-            map
-          });
-        });
-
-      });
-
-      // 最寄り店舗判定
-      let nearestStore = stores[0];
-      let nearestDistance = Infinity;
-
-      stores.forEach((store) => {
-
-        const distance = Math.sqrt(
-          Math.pow(userPos.lat - store.lat, 2) +
-          Math.pow(userPos.lng - store.lng, 2)
+        console.log(
+          "取得件数:",
+          data.elements.length
         );
 
-        if (distance < nearestDistance) {
-          nearestDistance = distance;
-          nearestStore = store;
-        }
+        data.elements.forEach((place) => {
 
-      });
+          let icon = "🏪";
 
-      console.log(
-        "最寄り店舗:",
-        nearestStore.name
-      );
-            // ボタン押下
-            document
-            .getElementById("findStore")
-            .addEventListener("click", () => {
-          
-              console.log("ボタン押された");
-          
-            
-              const directionsService =
-                new google.maps.DirectionsService();
-    
-              const directionsRenderer =
-                new google.maps.DirectionsRenderer();
-    
-              directionsRenderer.setMap(map);
-    
-              directionsService.route(
-                {
-                  origin: userPos,
-                  destination: {
-                    lat: nearestStore.lat,
-                    lng: nearestStore.lng
-                  },
-                  travelMode:
-                    google.maps.TravelMode.WALKING
-                },
-    
-                (result, status) => {
-    
-                  console.log(
-                    "Directions status:",
-                    status
-                  );
-    
-                  if (status === "OK") {
-    
-                    directionsRenderer.setDirections(result);
-    
-                    const route =
-                      result.routes[0].legs[0];
-    
-                    alert(
-                      `最寄り: ${nearestStore.name}
-    距離: ${route.distance.text}
-    時間: ${route.duration.text}`
-                    );
-    
-                  }
-    
-                }
-    
-              );
-    
-            });
-          },
-
-          (error) => {
-      
-            console.log(error);
-      
-            alert(
-              "位置情報を取得できませんでした"
-            );
-      
+          if (
+            place.tags &&
+            place.tags.amenity ===
+            "vending_machine"
+          ) {
+            icon = "🥤";
           }
-      
+
+          const marker =
+            new google.maps.Marker({
+              position: {
+                lat: place.lat,
+                lng: place.lon
+              },
+              map: map,
+              title:
+                place.tags?.name ||
+                "スポット"
+            });
+
+          const info =
+            new google.maps.InfoWindow({
+              content: `
+                ${icon}
+                ${
+                  place.tags?.name ||
+                  "名称不明"
+                }
+              `
+            });
+
+          marker.addListener(
+            "click",
+            () => {
+
+              info.open({
+                anchor: marker,
+                map
+              });
+
+            }
+          );
+
+        });
+
+      })
+      .catch(error => {
+
+        console.error(
+          "Overpassエラー",
+          error
         );
-      
-      }
+
+      });
+
+    },
+
+    (error) => {
+
+      console.log(error);
+
+      alert(
+        "位置情報を取得できませんでした"
+      );
+
+    }
+
+  );
+
+}
